@@ -5,10 +5,7 @@ import markdown2
 from . import util
 import re
 from django import forms
-
-class NewSearch(forms.Form):
-    search = forms.CharField(label='Search')
-
+import random
 
 
 def index(request):
@@ -27,7 +24,11 @@ def entry(request, title):
         "content": content, "title": title,
         "form": NewSearch(),
         })
-        
+
+
+class NewSearch(forms.Form):
+    search = forms.CharField(label='Search')
+
 def search(request):
     if request.method == 'POST':
         form = NewSearch(request.POST)
@@ -50,7 +51,37 @@ def not_found(request):
     return render(request, "encyclopedia/not_found.html",{
         "form": NewSearch(),
         })
+
+
+
+class NewPage(forms.Form):
+    title =  forms.CharField(widget=forms.TextInput)
+    content = forms.CharField(widget=forms.Textarea)
+
                   
+def new_page(request):
+    if request.method == 'POST':
+        newpage = NewPage(request.POST)
+        if newpage.is_valid():
+            titlePage = newpage.cleaned_data["title"]
+            content = newpage.cleaned_data["content"]
+            util.save_entry(titlePage, content)
+            return HttpResponseRedirect(reverse('encyclopedia:entry', args=({titlePage})))
+
+        else:
+            return render(request, "encyclopedia/new_page.html",{
+            "newPage": NewPage(),
+            })
+    else:        
+        return render(request, "encyclopedia/new_page.html",{
+            "newPage": NewPage(),
+            })
+
+def random_page(request):
+    numberPages = len(util.list_entries())
+    indexPage = random.randrange(numberPages)
+    page = util.list_entries()[indexPage]
+    return HttpResponseRedirect(reverse('encyclopedia:entry', args=({page})))  
 
 
 

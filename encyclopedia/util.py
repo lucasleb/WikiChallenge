@@ -12,7 +12,14 @@ def list_entries():
     return list(sorted(re.sub(r"\.md$", "", filename)
                 for filename in filenames if filename.endswith(".md")))
 
+
+
+
 def list_substring_entries(search):
+    """
+    Returns a list of all names of encyclopedia entries 
+    that have the query as a substring.
+    """
     _, filenames = default_storage.listdir("entries")
     return list(sorted(re.sub(r"\.md$", "", filename)
                 for filename in filenames if filename.endswith(".md") and re.search(search, filename, re.IGNORECASE)))
