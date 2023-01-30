@@ -3,27 +3,11 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 import markdown2
 from . import util
-
+import re
 from django import forms
 
 class NewSearch(forms.Form):
     search = forms.CharField(label='Search')
-
-def search(request):
-    if request.method == 'POST':
-        form = NewSearch(request.POST)
-        if form.is_valid():
-            title = form.cleaned_data["search"]
-            entry = util.get_entry(title)
-            if entry == None:
-                return HttpResponseRedirect(reverse("encyclopedia:not_found"))
-            else:
-                return HttpResponseRedirect(reverse('encyclopedia:entry', args=({title:entry})))
-
-                
-
-    else:
-        return HttpResponseRedirect(reverse("encyclopedia:not_found"))
 
 
 
@@ -44,7 +28,23 @@ def entry(request, title):
         "form": NewSearch(),
         })
         
-
+def search(request):
+    if request.method == 'POST':
+        form = NewSearch(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["search"]
+            result = util.get_entry(title)
+            if result == None:
+                suggestions = util.list_substring_entries(title)
+                return render(request, "encyclopedia/suggestions.html", {
+                            "suggestions": suggestions,
+                            "search": title,
+                            "form": NewSearch(),
+                })
+            else:
+                return HttpResponseRedirect(reverse('encyclopedia:entry', args=({title})))  
+    else:
+        return HttpResponseRedirect(reverse("encyclopedia:not_found"))
 
 def not_found(request):
     return render(request, "encyclopedia/not_found.html",{

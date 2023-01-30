@@ -1,0 +1,24 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>No results for: "{{ search }}" </h1>
+    
+
+    
+        {%if suggestions%}
+        <h3>You are maybe looking for:</h3>
+        <ul>
+        {% for suggestion in suggestions %}
+        <li><a href="{% url 'encyclopedia:entry' title=suggestion %}">{{ suggestion }}</a></li> 
+        {% endfor %}
+        </ul>
+        {% endif %}
+    
+
+{% endblock %}
+
+<a href=""></a>
