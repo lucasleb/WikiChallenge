@@ -47,7 +47,7 @@ h2 {
     flex-direction: column;
   }
   .bar {
-    /* display: block; */
+    position: relative;
   }
   .main {
     flex-grow: 1;

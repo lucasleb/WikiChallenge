@@ -1,7 +1,7 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    XXX
+    Encyclopedia
 {% endblock %}
 
 {% block body %}
@@ -9,10 +9,12 @@
 
     <ul>
         {% for entry in entries %}
-            <li>{{ entry }}</li>
+        <li><a href="{% url 'encyclopedia:entry' title=entry %}">{{ entry }}</a></li>
         {% empty %}
             There are no entries yet  
         {% endfor %}
     </ul>
 
 {% endblock %}
+
+<a href=""></a>

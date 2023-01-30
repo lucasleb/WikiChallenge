@@ -12,16 +12,18 @@
         <div class="wrapper">
             <div class="bar">
                 <h2>Wiki</h2>
-                <form>
-                    <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+                <form action="{% url 'encyclopedia:search' %}" method="post">
+                    {% csrf_token %}
+                    {{ form }}
                 </form>
                 <div>
-                    <a href="{% url 'index' %}">Home</a>
+                    <a href="{% url 'encyclopedia:index' %}">Home</a>
+
                 </div>
                 <div>
                     Create New Page
                 </div>
-                <div>
+                <div> 
                     Random Page
                 </div>
                 {% block nav %}
