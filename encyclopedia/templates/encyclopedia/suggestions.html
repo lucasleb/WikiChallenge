@@ -1,13 +1,11 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    Encyclopedia - No results
 {% endblock %}
 
 {% block body %}
     <h1>No results for: "{{ search }}" </h1>
-    
-
     
         {%if suggestions%}
         <h3>You are maybe looking for:</h3>

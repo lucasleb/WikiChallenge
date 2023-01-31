@@ -1,10 +1,15 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    Encyclopedia - New Page
 {% endblock %}
 
 {% block body %}
+
+    {% if pagealreadyExisting %}
+    <h2>Error: The page "{{ pagealreadyExisting }}" already exist</h2>
+    {% endif %}
+
     <h1>Create a new page</h1>
 
     <form action="{% url 'encyclopedia:new_page' %}" method="post">
